@@ -71,7 +71,7 @@ namespace train
                         break;
                     case MainMenu: await toMainMenu(message);
                         break;
-                    case CountJade: 
+                    case CountJade:
                         break;
                     case hasPass : await ProcessAnswer1(chatId, update); await SendQuestion2(chatId, update);
                         break;
@@ -81,7 +81,26 @@ namespace train
                         break;
                     case noBP : await ProcessAnswer2(chatId, update); await SendQuestion3(chatId, update);
                         break;
-
+                    case "1" : await ProcessAnswer3(chatId, update); 
+                        break;
+                    case "2" : await ProcessAnswer3(chatId, update); 
+                        break;
+                    case "3" : await ProcessAnswer3(chatId, update); 
+                        break;
+                    case "4" : await ProcessAnswer3(chatId, update); 
+                        break;
+                    case "5" : await ProcessAnswer3(chatId, update); 
+                        break;
+                    case "6" : await ProcessAnswer3(chatId, update); 
+                        break;
+                    case "7" : await ProcessAnswer3(chatId, update); 
+                        break;
+                    case "8" : await ProcessAnswer3(chatId, update); 
+                        break;
+                    case "9" : await ProcessAnswer3(chatId, update); 
+                        break;
+                    case "10" : await ProcessAnswer3(chatId, update);
+                        break;
                 }
                 return;
             }
@@ -96,10 +115,16 @@ namespace train
             if (message.Text == CountJade)
             {
                 await botClient.SendTextMessageAsync(message.Chat.Id, "Вы выбрали посчитать колличество нефрита через X дней");
+                await SendQuestion1(chatId, update);
                 _userAnswers[chatId] = 0;
-                await setChatInStage(message.Chat.Id, CountJade);
                 return;
             }
+/*
+            if (message.Text == "Начать")
+            {
+                await setChatInStage(chatId, "Начать");
+            }
+            */
 
             if (message.Text == hasPass)
             {
@@ -124,9 +149,60 @@ namespace train
                 await setChatInStage(chatId, noBP);
             }
             
+            if (message.Text == "1")
+            {
+                _userAnswers[chatId] = 3;
+                await setChatInStage(chatId, "1");
+            }
             
-            
-            
+            if (message.Text == "2")
+            {
+                _userAnswers[chatId] = 3;
+                await setChatInStage(chatId, "2");
+            }
+            if (message.Text == "3")
+            {
+                _userAnswers[chatId] = 3;
+                await setChatInStage(chatId, "3");
+            }
+            if (message.Text == "4")
+            {
+                _userAnswers[chatId] = 3;
+                await setChatInStage(chatId, "4");
+            }
+            if (message.Text == "5")
+            {
+                _userAnswers[chatId] = 3;
+                await setChatInStage(chatId, "5");
+            }
+            if (message.Text == "6")
+            {
+                _userAnswers[chatId] = 3;
+                await setChatInStage(chatId, "6");
+            }
+            if (message.Text == "7")
+            {
+                _userAnswers[chatId] = 3;
+                await setChatInStage(chatId, "7");
+            }
+            if (message.Text == "8")
+            {
+                _userAnswers[chatId] = 3;
+                await setChatInStage(chatId, "8");
+            }
+            if (message.Text == "9")
+            {
+                _userAnswers[chatId] = 3;
+                await setChatInStage(chatId, "9");
+            }
+            if (message.Text == "10")
+            {
+                _userAnswers[chatId] = 3;
+                await setChatInStage(chatId, "10");
+            }
+
+
+
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(update));
            
             if (update.Type == UpdateType.Message)
@@ -247,6 +323,7 @@ namespace train
                 ResizeKeyboard = true
             };
             await bot.SendTextMessageAsync(chatId, "Есть ли у вас пропуск снабжения?", replyMarkup: replyMarkup);
+            await removeChatFromStage(chatId);
         }
 
         static async Task SendQuestion2(long chatId, Update update)
@@ -260,6 +337,7 @@ namespace train
                 ResizeKeyboard = true
             };
             await bot.SendTextMessageAsync(chatId, "Есть ли у вас боевой пропуск?", replyMarkup: replyMarkup);
+            await removeChatFromStage(chatId);
         }
 
         static async Task SendQuestion3(long chatId, Update update)
@@ -282,6 +360,7 @@ namespace train
             };
             await ProcessAnswer3(chatId, update);
             await bot.SendTextMessageAsync(chatId, "Сколько этажей воспоминания хаоса вы проходите?", replyMarkup: replyMarkup);
+            await removeChatFromStage(chatId);
         }
 
         
@@ -290,7 +369,7 @@ namespace train
             var answerText = update.Message.Text;
             var answer1 = answerText;
             Answers[chatId].Add(answer1);
-            removeChatFromStage(chatId);
+            await removeChatFromStage(chatId);
             await bot.SendTextMessageAsync(chatId, $"Вы ответили на первый вопрос: {answerText}");
         }
 
@@ -299,8 +378,8 @@ namespace train
             var answerText = update.Message.Text;
             var answer2 = answerText;
             Answers[chatId].Add(answer2);
-            removeChatFromStage(chatId);
-            await bot.SendTextMessageAsync(chatId, $"Вы ответили на первый вопрос: {answerText}");
+            await removeChatFromStage(chatId);
+            await bot.SendTextMessageAsync(chatId, $"Вы ответили на второй вопрос: {answerText}");
         }
 
         static async Task ProcessAnswer3(long chatId, Update update)
@@ -308,8 +387,21 @@ namespace train
             var answerText = update.Message.Text;
             var answer3 = answerText;
             Answers[chatId].Add(answer3);
-            removeChatFromStage(chatId);
-            await bot.SendTextMessageAsync(chatId, $"Вы ответили на первый вопрос: {answerText}");
+            await removeChatFromStage(chatId);
+            await bot.SendTextMessageAsync(chatId, $"Вы ответили на третий вопрос: {answerText}");
+        }
+
+        static async Task Start(long chatId, Update update)
+        {
+            var replyMarkup = new ReplyKeyboardMarkup(new[]
+            {
+                new KeyboardButton("Начать"),
+            })
+            {
+                ResizeKeyboard = true
+            };
+            await bot.SendTextMessageAsync(chatId, "Начинаем", replyMarkup: replyMarkup);
+            await removeChatFromStage(chatId);
         }
 
         
