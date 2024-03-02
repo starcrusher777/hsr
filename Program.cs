@@ -17,7 +17,7 @@ namespace train
     internal class Program
     {
         private static Dictionary<long, int> _userAnswers = new();
-        private static ITelegramBotClient bot = new TelegramBotClient("6528515375:AAGH2grbOdX0Iee12YfePk0Ihbh51W_O95I");
+        private static ITelegramBotClient bot = new TelegramBotClient("");
         private static List<(long, string)> stages = new List<(long, string)>();
         private static Dictionary<long, List<string>> Answers = new();
 
